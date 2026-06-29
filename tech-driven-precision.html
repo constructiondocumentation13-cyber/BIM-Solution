@@ -78,4 +78,113 @@
             </div>
         </div>
     </main>
+<!-- ========================================== -->
+    <!-- GLOBAL FOOTER -->
+    <!-- ========================================== -->
+    <footer class="bg-white border-t border-slate-200 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center gap-4">
+            <!-- Logo -->
+            <a href="index.html" title="CAD Drafting India Home" class="flex items-center gap-2 cursor-pointer opacity-80 hover:opacity-100 transition-opacity">
+                <i class="ph ph-compass-tool text-2xl text-brand-blue"></i>
+                <span class="font-bold text-lg tracking-tight text-slate-900">CAD Drafting <span class="text-brand-orange">India</span></span>
+            </a>
+            <!-- Copyright -->
+            <p class="text-slate-500 text-sm">© 2026 CAD Drafting India. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- JAVASCRIPT & APP LOGIC -->
+    <!-- ========================================== -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+        }
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+
+        /**
+         * SCROLL REVEAL ANIMATIONS
+         * Using IntersectionObserver for award-winning entry animations.
+         */
+        function initScrollReveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        
+                        // Handle counter animation if it's inside a revealed section
+                        const counters = entry.target.querySelectorAll('.counter');
+                        if(counters.length > 0) {
+                            counters.forEach(counter => animateCounter(counter));
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            reveals.forEach(reveal => {
+                reveal.classList.remove('active'); // reset
+                observer.observe(reveal);
+            });
+        }
+
+        /**
+         * NUMBER COUNTER ANIMATION
+         */
+        function animateCounter(el) {
+            if (el.classList.contains('counted')) return;
+            
+            const target = parseInt(el.getAttribute('data-target'));
+            const duration = 2000; // 2 seconds
+            const stepTime = Math.abs(Math.floor(duration / target));
+            
+            let current = 0;
+            const timer = setInterval(() => {
+                current += Math.ceil(target / 100); // step logic
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                    el.classList.add('counted');
+                }
+                el.innerText = current;
+            }, stepTime);
+        }
+
+        /**
+         * READING PROGRESS BAR & STICKY NAV
+         */
+        window.addEventListener('scroll', () => {
+            // Navbar styling
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-md');
+                nav.classList.replace('py-4', 'py-0');
+            } else {
+                nav.classList.remove('shadow-md');
+                nav.classList.replace('py-0', 'py-4');
+            }
+
+            // Reading progress
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progress-bar').style.width = scrolled + '%';
+        });
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            initScrollReveal();
+        });
+
+    </script>
+</body>
+</html>
 
